@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
@@ -88,12 +87,12 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         Settings.Load();
-        Translation.Load(Settings.language.value);
+        Translation.Load(string.Format(FilePaths.language, Settings.language.value));
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
         confirmSelectionTextDisplay = confirmSelectionPanel.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        confirmSelectionDefaultText = Translation.Panels.confirmSelectionText;
+        confirmSelectionDefaultText = Translation.Get("confirmSelectionText");
         confirmSelectionPanel.SetActive(false);
 
         infoTextDisplay = infoPanel.transform.Find("Text").GetComponent<TextMeshProUGUI>();
@@ -108,29 +107,29 @@ public class GameManager : MonoBehaviour
         eventButtonDefaultText = eventButtonText.text;
 
         creationPanelTitle = creationPanel.transform.Find("Title").GetComponent<TextMeshProUGUI>();
-        creationPanelDefaultTitle = Translation.Panels.creationPanelTitle;
+        creationPanelDefaultTitle = Translation.Get("creationPanelTitle");
         creationPanelText = creationPanel.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        creationPanelDefaultText = Translation.Panels.creationPanelText;
+        creationPanelDefaultText = Translation.Get("creationPanelText");
         creationPanelStartButton = creationPanel.transform.Find("StartButton").GetComponent<Button>();
         newsInfoArea = creationPanel.transform.Find("NewsInfoArea").gameObject;
         newsInfoText = newsInfoArea.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        newsInfoDefaultText = Translation.Panels.newsInfoText;
+        newsInfoDefaultText = Translation.Get("newsInfoDefaultText");
 
         newsNameInput = newsInfoArea.transform.Find("NewsNameInput").GetComponent<TMP_InputField>();
         newsNameInputText = newsNameInput.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        newsNameInputDefaultText = Translation.Panels.newsNameInputText;
+        newsNameInputDefaultText = Translation.Get("newsNameInputText");
 
         newsAdjectiveInput = newsInfoArea.transform.Find("NewsAdjectiveInput").GetComponent<TMP_InputField>();
         newsAdjectiveInputText = newsAdjectiveInput.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        newsAdjectiveInputDefaultText = Translation.Panels.newsAdjectiveInputText;
+        newsAdjectiveInputDefaultText = Translation.Get("newsAdjectiveInputText");
 
         newsBeliverInput = newsInfoArea.transform.Find("NewsBeliverInput").GetComponent<TMP_InputField>();
         newsBeliverInputText = newsBeliverInput.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        newsBeliverInputDefaultText = Translation.Panels.newsBeliverInputText;
+        newsBeliverInputDefaultText = Translation.Get("newsBeliverInputText");
 
         newsDisbeliverInput = newsInfoArea.transform.Find("NewsDisbeliverInput").GetComponent<TMP_InputField>();
         newsDisbeliverInputText = newsDisbeliverInput.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        newsDisbeliverInputDefaultText = Translation.Panels.newsDisbeliverInputText;
+        newsDisbeliverInputDefaultText = Translation.Get("newsDisbeliverInputText");
     }
 
 
@@ -372,9 +371,9 @@ public class GameManager : MonoBehaviour
     public void CallEventScreen(string name)
     {
         eventPanel.SetActive(true);
-        eventTitleDisplay.text = Translation.GetIndex(name + "Title");
-        eventTextDisplay.text = Translation.GetIndex(name + "Text");
-        eventButtonText.text = Translation.GetIndex(name + "Option");
+        eventTitleDisplay.text = Translation.Get(name + "Title");
+        eventTextDisplay.text = Translation.Get(name + "Text");
+        eventButtonText.text = Translation.Get(name + "Option");
     }
 }
 
@@ -476,29 +475,29 @@ public class Date
         switch (month)
         {
             case 1:
-                return Translation.Date.Months.january;
+                return Translation.Get("january");
             case 2:
-                return Translation.Date.Months.february;
+                return Translation.Get("february");
             case 3:
-                return Translation.Date.Months.march;
+                return Translation.Get("march");
             case 4:
-                return Translation.Date.Months.april;
+                return Translation.Get("april");
             case 5:
-                return Translation.Date.Months.may;
+                return Translation.Get("may");
             case 6:
-                return Translation.Date.Months.june;
+                return Translation.Get("june");
             case 7:
-                return Translation.Date.Months.july;
+                return Translation.Get("july");
             case 8:
-                return Translation.Date.Months.august;
+                return Translation.Get("august");
             case 9:
-                return Translation.Date.Months.september;
+                return Translation.Get("september");
             case 10:
-                return Translation.Date.Months.october;
+                return Translation.Get("october");
             case 11:
-                return Translation.Date.Months.november;
+                return Translation.Get("november");
             case 12:
-                return Translation.Date.Months.december;
+                return Translation.Get("december");
         }
 
         return "The X month";

@@ -56,30 +56,35 @@ public class Country : MonoBehaviour
         GameManager.countries.Add(this);
 
         renderer = GetComponent<SpriteRenderer>();
-
-        foreach(TranslationEntry entry in Translation.entryList)
+        
+        foreach(KeyValuePair<string, string> entry in Translation.entries)
         {
-            string nam = name.ToLower();
-            string ind = entry.index;
-            
-            if (entry.index.ToLower().EndsWith("short"))
+            if (entry.Key.EndsWith("Short", System.StringComparison.InvariantCultureIgnoreCase))
             {
-                ind = entry.index.ToLower().Replace("short", "");
-                if (ind == nam)
+                string keyvalue = entry.Key.ToLower().Replace("short", "");
+
+                if (keyvalue == name.ToLower())
                 {
-                    string indparent = ind + "full";
-                    foreach(TranslationEntry secondentry in Translation.entryList)
+                    // Assign shortname
+                    shortname = entry.Value;
+
+                    // Find the fullname
+
+                    foreach(KeyValuePair<string, string> secondentry in Translation.entries)
                     {
-                        string secondind = secondentry.index.ToLower().Replace("short", "");
-                        if (secondind == indparent)
+                        if (secondentry.Key.EndsWith("Full", System.StringComparison.InvariantCultureIgnoreCase))
                         {
-                            fullname = secondentry.content;
+                            string secondvalue = secondentry.Key.ToLower().Replace("full", "");
+                            if (secondvalue == keyvalue)
+                            {
+                                fullname = secondentry.Value;
+                            }
                         }
                     }
-                    shortname = entry.content;
                 }
             }
         }
+
 
         if ((shortname == null) || (shortname == ""))
         {
