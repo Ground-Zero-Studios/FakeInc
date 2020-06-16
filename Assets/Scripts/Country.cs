@@ -1,38 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
-using System.CodeDom;
-using System.Globalization;
-using System.Runtime.InteropServices.ComTypes;
 
 [RequireComponent(typeof(PolygonCollider2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 
 public class Country : MonoBehaviour
 {
+
     // Variables
     public string shortname;
     public string fullname;
-    public uint population;
-    public uint belivers;
-    public uint disbelivers;
-    public float wealth;
 
     public int countrySize;
+
+    public uint startingPopulation;
+    public uint startingWealth;
+    public uint startingWealthGrowth;
 
     public float startingBirthRate;
     public float startingDeathRate;
     public float startingStability;
+    public float startingCorruption;
     [Range(0,1)]
-    public float startingAttractivity;
+    public float startingTourism;
+    public float startingMining;
 
     public ushort startingAirports;
     public ushort startingSeaports;
 
+    [HideInInspector]
     public ushort airports; // max 65.535
+    [HideInInspector]
     public ushort seaports;
 
 
@@ -42,9 +43,20 @@ public class Country : MonoBehaviour
     [HideInInspector]
     public float deathrate = 0f;
     [HideInInspector]
-    public float stability = 0.5f;
+    public float wealthGrowth = 0.005f;
     [HideInInspector]
-    public float attractivity = 0f;
+    public float mining = 0.2f;
+    [HideInInspector]
+    public float tourism = 0.2f;
+    [HideInInspector]
+    public uint wealth = 0;
+    [HideInInspector]
+    public uint population = 0;
+    [HideInInspector]
+    public uint belivers = 0;
+    [HideInInspector]
+    public uint disbelivers = 0;
+
 
     // Other
 #pragma warning disable CS0108 // O membro oculta o membro herdado; nova palavra-chave ausente
@@ -111,9 +123,20 @@ public class Country : MonoBehaviour
             population = GameManager.GetRandomPop(countrySize);
         }
 
+        if (birthrate == 0)
+        {
+            uint rand = (uint)Random.Range(0, population/1000000) ;
+            birthrate = rand * (100 / (population / 1000000));
+        }
+
+        if (deathrate == 0)
+        {
+            deathrate = Random.Range(0f, 1f);
+        }
+
+
         airports = startingAirports;
         seaports = startingSeaports;
-        stability = startingStability;
     }
 
     uint GetTotalPop()
@@ -121,28 +144,6 @@ public class Country : MonoBehaviour
         return population + belivers + disbelivers;
     }
 
-    public string PoliticalState()
-    {
-        if (stability >= 0.8)
-        {
-            return "Organized";
-        } else
-        if (stability >= 0.5)
-        {
-            return "Disorder";
-        } else
-        if (stability >= 0.2)
-        {
-            return "Chaos";
-        } else
-        if (stability >= 0)
-        {
-            return "Anarchy";
-        } else
-        {
-            return "Destroyed";
-        }
-    }
     void Update()
     {
         if (GameManager.instance.gamePhase == GameManager.Phase.Select)
@@ -187,24 +188,93 @@ public class Country : MonoBehaviour
         
     }
 
+    public float stability()
+    {
+        return ((birthrate - deathrate) + wealthGrowth + tourism) / 3;
+    }
+
+    public void SendPlane(Country country)
+    {
+        int flightType = Random.Range(0, 2);
+        if (flightType == 1)
+        {
+            // Commercial / Tourism Flight
+            uint value = (uint) (200 * ((country.tourism + country.stability() + (wealth / startingWealth)) / 3));
+            country.wealth += value;
+            Debug.Log($"Sending a economic flight to {country.shortname}. They just got {value} in wealth");
+        }
+        else
+        {
+            // Immigration Flight
+            uint value = (uint) 200 * 1; // Temporary
+            population -= value;
+            country.population += value;
+            Debug.Log($"Sending a immigration flight to {country.shortname}.\n{value} population transfered from {shortname} to {country.shortname}");
+        }
+    }
+
     public void Think()
     {
-        Collider2D[] collidersInRange = Physics2D.OverlapCircleAll(transform.position,6f);
+        // Variables
+        int num = 0;
 
+
+        // Internal Stuff
+        num = Random.Range(1, 10);
+        if (num == 1)
+        {
+            population = population + (uint) (population * (birthrate/10) * (Random.Range(0f,1f)));
+        }
+        num = Random.Range(1, 10);
+        if (num == 1)
+        {
+            population = population - (uint)(population * (deathrate / 10) * (Random.Range(0f + stability(), 2f - stability())));
+        }
+
+        // International Stuff
+        Collider2D[] collidersInRange = Physics2D.OverlapCircleAll(transform.position,6f);
         foreach(Collider2D collider in collidersInRange)
         {
             Country country = collider.transform.GetComponent<Country>();
             if (country == null) { continue; }
 
+            num = Random.Range(0, 100);
+            if (num == 1)
+            {
+                // If the country's economy is stable
+                if (country.wealth > country.startingWealth/10)
+                {
+                    #region Flights
+                    // Only think about flights if you actually have an airport, duh.
+                    if ((airports > 0) && (country.airports > 0))
+                    {
+                        // If is not having a hard time with airports
+                        if (airports > startingAirports / 10)
+                        {
+                            // 100% chance for a flight to take off
+                            SendPlane(country);
+                        }
+                        else
+                        {
+                            // Lower chances the lower the airport amounts.
+                            float random = Random.value;
+                            if (random < (startingAirports / airports))
+                            {
+                                SendPlane(country);
+                            }
+                        }
+                    }
+                    #endregion
+                }
+                else
+                {
+                    
+                }
+            }
+
             
         }
     }
 
-    void TransferPop(Country to, uint amount)
-    {
-        population -= amount;
-        to.population += amount;
-        //TODO: Chance of transferring belivers and disbelivers.
-    }
-
 }
+

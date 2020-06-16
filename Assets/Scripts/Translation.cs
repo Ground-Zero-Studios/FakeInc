@@ -42,14 +42,13 @@ public class Translation : MonoBehaviour
 
     public static string Get(string entryname)
     {
-        foreach(KeyValuePair<string, string> entry in entries)
+        if (entries.ContainsKey(entryname))
         {
-            if (entry.Key.ToLower() == entryname.ToLower())
-            {
-                return entry.Value;
-            }
+            return entries[entryname];
+        } else
+        {
+            return null;
         }
-        return null;
     }
 
 }

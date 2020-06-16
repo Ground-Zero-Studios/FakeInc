@@ -61,11 +61,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Q))
-        {
-            Events.Call(Events.firstPop);
-        }
-
         if (!GameManager.instance.isUIOpen())
         {
             float mouseWheel = Input.GetAxis("Mouse ScrollWheel");

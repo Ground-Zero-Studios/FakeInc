@@ -337,9 +337,9 @@ public class GameManager : MonoBehaviour
         return (uint) Random.Range(1000, maxValue);
     }
 
-    public static float GetRandomMoney(int countrySize)
+    public static uint GetRandomMoney(int countrySize)
     {
-        return Random.Range(0, 101)/100;
+        return (uint) Random.Range(0, 10000001);
     }
 
     public void GameTick() // 1 day per second, 10 ticks per second = 10 ticks per day
@@ -353,7 +353,6 @@ public class GameManager : MonoBehaviour
             gameTick = 1;
             // Date forward. (+1 day)
             Date.Forward();
-            Events.Refresh();
         }
 
         // Execute every tick...
