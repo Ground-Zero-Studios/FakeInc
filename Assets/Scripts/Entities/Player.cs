@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
+using GroundZero;
+using GroundZero.Managers;
+using System.Linq;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -15,21 +18,37 @@ public class Player : MonoBehaviour
     public GameObject worldMap; // Game Area Object
 
     public static Country playerCountry;
+
+    public string newsName;
+    public string newsAdj; // Adjective
+    public string newsBAdj; // Beliver Adj.
+    public string newsDAdj; // Disbeliver Adj.
+
+    public enum NewsType { Custom, FlatEarth, Vaccines}
+
+    public NewsType newsType;
+
     private float cameraZoom; 
 
     void Start()
     {
+
         playerCamera = GetComponentInChildren<Camera>();
         cameraZoom = playerCamera.orthographicSize;
 
-        if (GameManager.player == null)
+        if (Game.player == null)
         {
-            GameManager.player = this;
+            Game.player = this;
         }
 
+        List<string> options = new List<string>();
+        foreach (string index in System.Enum.GetNames(typeof(NewsType)))
+        {
+            options.Add(Localization.Get("newsType" + index));
+        }
 
+        Game.instance.newsTypeDropdown.AddOptions(options);
     }
-
 
     public bool IsOutOfBounds()
     {
@@ -59,9 +78,28 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void OnCountryClick(Country country)
+    {
+        if (Game.selectedCountry != country)
+        {
+            Game.selectedCountry = country;
+        }
+        else
+        {
+            /* PSEUDO CODE
+             * if (!Game.statsWindow.isOpen()
+             * {
+             *   Game.OpenStats(country);
+             * }
+             */
+        }
+    }
+
+    
+
     void Update()
     {
-        if (!GameManager.instance.isUIOpen())
+        if (!Game.instance.isUIOpen())
         {
             float mouseWheel = Input.GetAxis("Mouse ScrollWheel");
             cameraZoom -= mouseWheel * zoomMultiplier;
@@ -111,5 +149,4 @@ public class Player : MonoBehaviour
             }
         }
     }
-
 }
