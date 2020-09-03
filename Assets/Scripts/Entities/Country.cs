@@ -70,6 +70,8 @@ public class Country : MonoBehaviour
         {
             resources.Add(resource, amount);
         }
+        Game.onUpdateResource.Invoke(resource);
+        Game.onGainResource.Invoke(resource, amount);
     }
 
     public void SubtractResource(string resource, uint amount)
@@ -82,6 +84,8 @@ public class Country : MonoBehaviour
         {
             resources.Add(resource, 0);
         }
+        Game.onUpdateResource.Invoke(resource);
+        Game.onLoseResource.Invoke(resource, amount);
     }
 
     void Update()
@@ -132,8 +136,7 @@ public class Country : MonoBehaviour
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Game.instance.OnCountryClick(this);
-            Game.player.OnCountryClick(this);
+            Game.onCountryClick.Invoke(this);
         }
         
     }
@@ -141,6 +144,11 @@ public class Country : MonoBehaviour
     public void Think()
     {
         // TODO: Manage resources
+
+
+
+
+        Game.onCountryThink.Invoke(this);
     }
 
 }

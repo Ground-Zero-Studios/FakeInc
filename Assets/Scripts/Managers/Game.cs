@@ -86,10 +86,25 @@ namespace GroundZero.Managers
         private string              newsAttributesDefaultText;
 
 
+
+
+        public static UnityEvent<string>        onUpdateResource;
+        public static UnityEvent<string, uint>  onLoseResource;
+        public static UnityEvent<string, uint>  onGainResource;
+
+        public static UnityEvent<int>           onElapsedDay;
+        public static UnityEvent<int>           onElapsedMonth;
+        public static UnityEvent<int>           onElapsedYear;
+
+        public static UnityEvent                onDayPass;
+        public static UnityEvent                onMonthPass;
+        public static UnityEvent                onYearPass;
+
+        public static UnityEvent<Country>       onCountryThink;
+        public static UnityEvent<Country>       onCountryClick;
+
         private float updateTimer = 0f;
         private int gameTick = 0;
-
-        private bool handlingEvents = false;
 
         public struct FilePaths
         {
@@ -103,18 +118,17 @@ namespace GroundZero.Managers
         {
             instance = this;
             Settings.Load();
-            Mods.Load(FilePaths.mods);
-
+            //Mods.Load(FilePaths.mods);
 
             List<string> localizationPaths = new List<string>();
 
             localizationPaths.Add(FilePaths.language);
 
-            foreach(Mod mod in Mods.list)
-            {
-                localizationPaths.Add(FilePaths.mods + "/" + mod.Identifier + "/Language/{0}.ini");
+            //foreach(Mod mod in Mods.list)
+            //{
+            //    localizationPaths.Add(FilePaths.mods + "/" + mod.Identifier + "/Language/{0}.ini");
                 
-            }
+            //}
 
             foreach(string path in localizationPaths)
             {
@@ -217,53 +231,6 @@ namespace GroundZero.Managers
             Player.playerCountry = country;
         }
 
-        public void OnCountryClick(Country country)
-        {
-            // If there's an open menu, we dont want to register a click.
-            // We also only want to handle the selection phase here.
-            if ((isUIOpen()) || (gamePhase != Phase.Select))
-            {
-                return;
-            }
-
-            // If the country that we clicked isn't selected already
-            if (selectedCountry != country)
-            {
-                // Select
-                selectedCountry = country;
-            }
-            else
-            {
-                //If it's been already selected and we're clicking one more time...
-                //Show the message to confirm the selection.
-
-                confirmSelectionPanel.SetActive(true);
-
-                confirmSelectionTextDisplay.text = string.Format(confirmSelectionDefaultText, country.shortname);
-            }
-            
-        }
-
-        public void OnButtonClick(string button)
-        {
-            if (button.Equals("Play", System.StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (creationPanel.activeSelf)
-                {
-                    if (canStartGame())
-                    {
-                        creationPanel.SetActive(false);
-                        player.newsName = newsNameInput.text;
-                        player.newsAdj = newsAdjectiveInput.text;
-                        player.newsBAdj = newsBeliverInput.text;
-                        player.newsDAdj = newsDisbeliverInput.text;
-                        player.newsType = (Player.NewsType) newsTypeDropdown.value;
-                        gamePhase = Phase.Select;
-                    }
-                }
-            }
-        }
-
         public bool canStartGame()
         {
             if (newsNameInput.text == "") { return false; }
@@ -347,10 +314,7 @@ namespace GroundZero.Managers
 
             if (gamePhase == Phase.Game)
             {
-                if (!Mods.handlingEvents)
-                {
-                    Mods.HandleEvents();
-                }
+
             }
 
 
@@ -406,6 +370,7 @@ namespace GroundZero.Managers
         {
             day += days;
             elapsedDays++;
+            Game.onDayPass.Invoke();
             Process();
         }
 
@@ -418,6 +383,7 @@ namespace GroundZero.Managers
                 month -= 12;
                 year += 1;
                 elapsedYears++;
+                Game.onYearPass.Invoke();
             }
 
             while (day > maxday)
@@ -425,6 +391,7 @@ namespace GroundZero.Managers
                 day -= maxday;
                 month += 1;
                 elapsedMonths++;
+                Game.onMonthPass.Invoke();
                 maxday = MaxDay(month);
             }
         }

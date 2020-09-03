@@ -218,12 +218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &11435200
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -423,12 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &90235645
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -755,12 +745,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &112818767
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1026,12 +1011,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &140607303
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,12 +1109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &140607307
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1321,12 +1296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &155241062
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1613,12 +1583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &166700550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1673,7 +1638,7 @@ MonoBehaviour:
   infoPanel: {fileID: 988137925}
   eventPanel: {fileID: 44087642}
   creationPanel: {fileID: 242517473}
-  newsTypeDropdown: {fileID: 0}
+  newsTypeDropdown: {fileID: 1386525777}
 --- !u!1 &172574182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1925,12 +1890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &242517473 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 680603783587484697, guid: a9174526f811e0d459558c0e8954ab0e,
@@ -2040,12 +2000,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &306712097
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2548,12 +2503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &336074296
 GameObject:
   m_ObjectHideFlags: 0
@@ -2729,12 +2679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &337778877
 GameObject:
   m_ObjectHideFlags: 0
@@ -3672,12 +3617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &341186641
 GameObject:
   m_ObjectHideFlags: 0
@@ -3775,12 +3715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &341186645
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -4703,12 +4638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &452656444
 GameObject:
   m_ObjectHideFlags: 0
@@ -4840,12 +4770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &464118157
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -5456,12 +5381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5867,12 +5787,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &577325138
 GameObject:
   m_ObjectHideFlags: 0
@@ -6118,12 +6033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &617994403
 GameObject:
   m_ObjectHideFlags: 0
@@ -6417,12 +6327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &638091139
 GameObject:
   m_ObjectHideFlags: 0
@@ -6691,12 +6596,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &965892698
 GameObject:
   m_ObjectHideFlags: 0
@@ -6844,12 +6744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &1002038095
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -7014,12 +6909,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &1008410169
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -7458,12 +7348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &1225909846
 GameObject:
   m_ObjectHideFlags: 0
@@ -7561,12 +7446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &1225909850
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -8039,12 +7919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: Brazil
   fullname: Federative Republic of Brazil
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 211578310
 --- !u!1 &1268258670
 GameObject:
   m_ObjectHideFlags: 0
@@ -8180,12 +8055,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: Uruguay
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
+--- !u!114 &1386525777 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 680603783841896465, guid: a9174526f811e0d459558c0e8954ab0e,
+    type: 3}
+  m_PrefabInstance: {fileID: 680603783829410296}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1417378512
 GameObject:
   m_ObjectHideFlags: 0
@@ -8414,7 +8296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b16df0b6976bdf46a7410d72dae8d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
+  playerCamera: {fileID: 519420031}
   cameraSpeed: 4
   zoomSpeed: 2
   speedMultiplier: 2
@@ -8656,12 +8538,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &1509845810
 GameObject:
   m_ObjectHideFlags: 0
@@ -8759,12 +8636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &1509845814
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -9089,12 +8961,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &1658179125
 GameObject:
   m_ObjectHideFlags: 0
@@ -9378,12 +9245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &1681212775
 GameObject:
   m_ObjectHideFlags: 0
@@ -9618,12 +9480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!224 &1738482826 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1997349022662701610, guid: 66f16d35ecd2cd441a616c5c56f64c2f,
@@ -9860,12 +9717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &1948545548
 GameObject:
   m_ObjectHideFlags: 0
@@ -10044,12 +9896,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1 &1979475518
 GameObject:
   m_ObjectHideFlags: 0
@@ -10147,12 +9994,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &1979475522
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -10514,12 +10356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!60 &2085848670
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -11256,12 +11093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shortname: 
   fullname: 
-  selectSound: {fileID: 0}
   countrySize: 0
-  startingPopulation: 0
-  birthrate: 0
-  deathrate: 0
-  population: 0
 --- !u!1001 &317545815435141189
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12012,6 +11844,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: InfoPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 1498227958089764703, guid: 8e95f797ed8d40949a0ab5c201dd0277,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e95f797ed8d40949a0ab5c201dd0277, type: 3}
 --- !u!1001 &1997349024265901728
@@ -12244,6 +12081,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TimeDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 4840275273267209602, guid: 3c720aa5817d5c048a0a90014d0b515c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7290505912000753912, guid: 3c720aa5817d5c048a0a90014d0b515c,
         type: 3}

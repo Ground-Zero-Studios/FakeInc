@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        Game.onCountryClick.AddListener(OnCountryClick);
 
         playerCamera = GetComponentInChildren<Camera>();
         cameraZoom = playerCamera.orthographicSize;
@@ -77,6 +78,8 @@ public class Player : MonoBehaviour
             return 1f;
         }
     }
+
+
 
     public void OnCountryClick(Country country)
     {

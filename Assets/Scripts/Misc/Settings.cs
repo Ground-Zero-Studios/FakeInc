@@ -96,7 +96,6 @@ namespace GroundZero
             Settings.list.Add(this);
         }
 
-        public static implicit operator KeyCode(Setting s) => s.toKeyCode();
         public KeyCode toKeyCode()
         {
             return (KeyCode)System.Enum.Parse(typeof(KeyCode), value);

@@ -1,19 +1,22 @@
 ﻿using GroundZero.Managers;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.SqlTypes;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
+/* ----------------------------------------------------------------------------------------
+ *                                        ATTENTION                                        
+ * This code is being stored for reference only. It is deprecated and no longer supported.
+ * This used to be the "modding" support for the game, which has been scrapped on 28/08/2020
+ * 
+ * 
+ * 
+ * ----------------------------------------------------------------------------------------
+ */
 namespace GroundZero.Assets
 {
     public static class Mods
     {
+        /*
         public static bool hasLoadedBaseMod = false;
 
         public static bool handlingEvents = false;
@@ -28,7 +31,6 @@ namespace GroundZero.Assets
             {
                 mod.Replace('\\', '/');
                 Mod m = new Mod();
-                Debug.Log(mod);
                 if (mod.EndsWith("BaseGame.ini")) { hasLoadedBaseMod = true; }
                 m.LoadFromFile(mod);
                 list.Add(m);
@@ -39,37 +41,13 @@ namespace GroundZero.Assets
                 throw new System.Exception("Failed to load base mod file.");
             }
         }
-
-        public static async Task HandleEvents()
-        {
-            await Task.Run(
-                () =>
-                {
-                    Debug.Log("Calling events");
-                    handlingEvents = true;
-                    foreach(Mod mod in Mods.list)
-                    {
-                        foreach(Event ev in mod.eventList)
-                        {
-                            ev.TryTrigger();
-                        }
-                    }
-                    int i = 0;
-                    while (i < 1000)
-                    {
-                        i++;
-                    }
-
-                    handlingEvents = false;
-                }
-                );
-        }
-
+        */
     }
 
 
     public class Mod
     {
+        /*
         public string Name, Identifier, Desc, Author, Icon;
 
         public Dictionary<int, string> sounds = new Dictionary<int, string>();
@@ -165,6 +143,8 @@ namespace GroundZero.Assets
                     cond.Scope = ini.ReadValue(conditions[k], "Scope", "Nothing");
                     cond.Value = ini.ReadValue(conditions[k], "Value", "Nothing");
 
+                    cond.Register();
+
                     conditionList.Add(k, cond);
                 }
             }
@@ -193,9 +173,9 @@ namespace GroundZero.Assets
             {
                 if (ini.IsSectionExists(events[k]))
                 {
-                    if (ini.IsKeyExists(events[k], "Identifier")
-                        || ini.IsKeyExists(events[k], "Conditions")
-                        || ini.IsKeyExists(events[k], "Effects"))
+                    if (!ini.IsKeyExists(events[k], "Identifier")
+                        || !ini.IsKeyExists(events[k], "Conditions")
+                        || !ini.IsKeyExists(events[k], "Effects"))
                     {
                         continue;
                     }
@@ -229,12 +209,13 @@ namespace GroundZero.Assets
             ini.Close();
 
         }
+        */
     }
 
     public class Event
-    {
+    {/*
         static string[] socialMedias =
-{
+        {
         "Facebook", "Twitch", "Instagram", "Discord", "MySpace", "Fandom", "Wiki",
         "WhatsApp", "YouTube", "VidLii", "Snapchat", "Skype", "Spotify", "Xbox", "Playstation", "Wii U Online"
         };
@@ -320,6 +301,7 @@ namespace GroundZero.Assets
         "Mello", "John Wick", "\"Albion Online\"", "\"EVE Online\"", "X", "Mr. X", "Faustão"
         };
 
+
         public static string GetRandomSocialMedia()
         {
             return socialMedias[UnityEngine.Random.Range(0, socialMedias.Length)];
@@ -373,27 +355,20 @@ namespace GroundZero.Assets
         public Event(Mod master)
         {
             this.master = master;
+
         }
 
         public void TryTrigger()
         {
-            if (canTrigger())
-            {
-                Trigger();
-            }
-        }
-
-        public bool canTrigger()
-        {
-            if (triggered) { return false; }
-            foreach(Condition condition in conditions)
-            {
-                if (!condition.IsMet(this))
+            foreach(Condition cond in conditions)
+            { 
+                if (!cond.isFullfilled())
                 {
-                    return false;
+                    return;
                 }
             }
-            return true;
+
+            Trigger();
         }
 
         public void Trigger()
@@ -408,16 +383,31 @@ namespace GroundZero.Assets
                 triggered = true;
             }
         }
-
+        */
     }
 
     public class Condition
     {
+        /*
         public static List<string> tests = new List<string>();
         public static List<string> operators = new List<string>();
-        public static List<string> scopes = new List<string>();
+        public static List<string> scopes = new List<string>();        
 
         public string Test, Operator, Scope, Value;
+
+        public bool hasBeenMet = false;
+        public enum CheckType
+        {
+            DayPass,MonthPass,YearPass,CountryThink,CountryClick,
+        }
+
+        public void Evaluate()
+        {
+            if (isFullfilled())
+            {
+                hasBeenMet = true;
+            }
+        }
 
         public static void LoadBuiltIns()
         {
@@ -430,35 +420,60 @@ namespace GroundZero.Assets
             operators.Add("Greater");
             operators.Add("Lesser");
         }
-
-        public bool IsMet(Event ev)
+        public bool isFullfilled()
         {
-            if (!TestIsValid() || !OperatorIsValid())
+            if ((!TestIsValid()) || (!OperatorIsValid()))
             {
                 return false;
             }
+
             if (Test == "Day")
             {
-                int val = int.Parse(Value);
-                if (Operator == "Elapsed")
+                switch (Operator)
                 {
-                    if (Date.elapsedDays >= val)
-                    {
-                        Debug.Log("Event condition has returned true");
-                        return true;
-                    }
-                } else
-                if (Operator == "Equals")
-                {
-                    
+                    case "Elapsed":
+                        if (Date.elapsedDays >= int.Parse(Value))
+                        {
+                            return true;
+                        }
+                        break;
+                    case "Equals":
+                        if (Date.day == int.Parse(Value))
+                        {
+                            return true;
+                        }
+                        break;
                 }
+            } else
+            if (Test == "Month")
+            {
+
+            } else
+            if (Test == "Year")
+            {
+
             }
-
-
 
 
             return false;
         }
+
+        public void Register()
+        {
+            if ((!TestIsValid()) || (!OperatorIsValid()))
+            {
+                return;
+            }
+
+
+            switch (Operator)
+            {
+
+            }
+
+        }
+
+
 
         bool TestIsValid()
         {
@@ -471,36 +486,37 @@ namespace GroundZero.Assets
             if (operators.Contains(Operator)) { return true; }
             return false;
         }
+        */
     }
 
     public class Effect
     {
-        public string Variable, Scope, Operator, Value;
+        //public string Variable, Scope, Operator, Value;
 
-        public static void LoadBuiltIns()
-        {
-            variables.Add("Nothing");
-            variables.Add("PlaySound");
+        //public static void LoadBuiltIns()
+        //{
+        //    variables.Add("Nothing");
+        //    variables.Add("PlaySound");
 
-            scopes.Add("Nothing");
-            scopes.Add("World");
-            scopes.Add("Random");
-            scopes.Add("Everyone");
+        //    scopes.Add("Nothing");
+        //    scopes.Add("World");
+        //    scopes.Add("Random");
+        //    scopes.Add("Everyone");
 
-            operators.Add("Add");
-            operators.Add("Subtract");
-            operators.Add("Divide");
-            operators.Add("Multiply");
-        }
+        //    operators.Add("Add");
+        //    operators.Add("Subtract");
+        //    operators.Add("Divide");
+        //    operators.Add("Multiply");
+        //}
 
-        public void Apply()
-        {
-            // TODO IMPLEMENT
-        }
+        //public void Apply()
+        //{
+        //    // TODO IMPLEMENT
+        //}
 
-        public static List<string> variables = new List<string>();
-        public static List<string> scopes = new List<string>();
-        public static List<string> operators = new List<string>();
+        //public static List<string> variables = new List<string>();
+        //public static List<string> scopes = new List<string>();
+        //public static List<string> operators = new List<string>();
 
 
 

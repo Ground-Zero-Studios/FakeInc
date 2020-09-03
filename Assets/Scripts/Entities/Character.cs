@@ -11,13 +11,11 @@ using UnityEngine.UIElements;
  *
  * --------------------------------------------------------------------------------------------
  * Description: Handle information that's relevant to a game character. This means the player
- * and NPCs will (or should) be using this class. 
+ * and NPCs will (or should) be using this class as their parent.
  * 
  * 
  * 
- * Usage: Put it on a GameObject and set it up.
- * Use Character.HasFlag and Character.SetFlag to read/modify the character flags.
- * "velocity" can be changed from outside scripts for movement.
+ * Usage: Inherit it on a class to make it a Character entity.
  * 
  * 
  * This class is part of the "Reuse" project.
@@ -47,7 +45,10 @@ namespace GroundZero.Entities
         public float maxFallHeight;
 
         // This character's velocity
-        Vector3 velocity;
+        public Vector3 velocity;
+
+        // The last velocity of this Character
+        public Vector3 lastVelocity;
 
         // Was this character grounded the last frame?
         bool wasGrounded;
@@ -58,7 +59,25 @@ namespace GroundZero.Entities
         // The amount of health to recover every second while healing
         public float healAmount;
 
-        // The timer that keeps track of above's time.
+        // The last damage taken by this Character
+        public float lastDamage;
+
+        // The last healing taken by this Character
+        public float lastHeal;
+
+        // The last object to deal damage to this character
+        public object lastDamageDealer;
+
+        // The last object to heal this character
+        public object lastHealer;
+
+        // Is this character moving?
+        public bool isMoving;
+
+        // Friction (Deaceleration)
+        public float friction = 0.8f;
+
+        // The timer that keeps track of when to heal.
         float healTimer;
 
         // The start and end point of the character's fall, when falling.
@@ -80,8 +99,9 @@ namespace GroundZero.Entities
              *                  Note that CANJUMP and CANRUN can be flagged, but
              *                  nothing will happen if CANMOVE is not flagged.
              *                  Also, these 3 do nothing here, and are to be used
-             *                  by outside classes (entities).
+             *                  by children classes.
              * PASSIVEHEAL:     Will heal this character over time.
+             * FRICTION:        Will deacelerate on X and Z axis over time.
              */
 
             GODMODE         = 1 << 0,
@@ -91,7 +111,8 @@ namespace GroundZero.Entities
             CANMOVE         = 1 << 4,
             CANJUMP         = 1 << 5,
             CANRUN          = 1 << 6,
-            PASSIVEHEAL     = 1 << 7
+            PASSIVEHEAL     = 1 << 7,
+            FRICTION        = 1 << 8
         }
 
         // Damage Types for damage handling (Changes animations and other effects).
@@ -106,6 +127,9 @@ namespace GroundZero.Entities
              * BULLET:      Being shot. (Gunfire)
              * CRUSH:       Being crushed (Crushers!)
              * EXPLOSION:   Damage from explosions (Exploding props, grenades, etc)
+             * ELETRIC:     Damage from electricity (Teslas, power box shocks, whatever)
+             * TOXIC:       Damage from toxic things (Gases, hazards, twitter, etc)
+             * POISON:      Damage from poison stuff?
              */
 
             GENERIC,
@@ -115,7 +139,10 @@ namespace GroundZero.Entities
             BURN,
             BULLET,
             CRUSH,
-            EXPLOSION
+            EXPLOSION,
+            ELETRIC,
+            TOXIC,
+            POISON
         }
 
         // See above
@@ -127,23 +154,28 @@ namespace GroundZero.Entities
 
 
         // Start Method. Not much to see here.
-        void Start()
+        public virtual void Start()
         {
             // Assign the controller
             controller = GetComponent<CharacterController>();
-            // Look for a ruling entity.
 
             health = maxHealth;
             healTimer = timeUntilHealing;
         }
 
         // Update - Try to keep it organized.
-        void Update()
+        public virtual void Update()
         {
             if (HasFlag(Flags.GRAVITY))
             {
                 HandleGravity();
             }
+
+            if (HasFlag(Flags.FRICTION))
+            {
+                HandleFriction();
+            }
+            
             HandleVelocity();
         }
 
@@ -154,7 +186,7 @@ namespace GroundZero.Entities
         /// </summary>
         /// <param name="flag">The flag to be checked for</param>
         /// <returns>True if character has flag</returns>
-        public bool HasFlag(Flags flag)
+        public virtual bool HasFlag(Flags flag)
         {
             if (flags.HasFlag(flag))
             {
@@ -168,7 +200,7 @@ namespace GroundZero.Entities
         /// </summary>
         /// <param name="flag">The flag to modify</param>
         /// <param name="value">The new flag value</param>
-        public void SetFlag(Flags flag, bool value)
+        public virtual void SetFlag(Flags flag, bool value)
         {
             if (value)
             {
@@ -193,18 +225,7 @@ namespace GroundZero.Entities
         /// <param name="type">The type of damage</param>
         public void Damage(float amount, DamageType type)
         {
-            // No damage if godmode is active
-            if (!HasFlag(Flags.GODMODE))
-            {
-                health -= Mathf.Abs(amount);
-            }
-            // Register the last damage type taken.
-            lastDamageType = type;
-            UpdateStats();
-            Debug.Log($"{name} has sustained {amount} {type.ToString()} damage");
-
-            // Reset the natural heal time
-            healTimer = timeUntilHealing;
+            Damage(amount, type, null);
         }
 
         /// <summary>
@@ -213,17 +234,77 @@ namespace GroundZero.Entities
         /// <param name="amount">(Positive) Amount of damage</param>
         public void Damage(float amount)
         {
-            Damage(amount, DamageType.GENERIC);
+            Damage(amount, DamageType.GENERIC, null);
         }
+
+        /// <summary>
+        /// Deals damage to this character.
+        /// </summary>
+        /// <param name="amount">(Positive) Amount of damage</param>
+        /// <param name="type">The type of damage</param>
+        /// <param name="dealer">Object that dealt the damage.</param>
+        public virtual void Damage(float amount, DamageType type, object dealer)
+        {
+            // No damage if godmode is active
+            if (!HasFlag(Flags.GODMODE))
+            {
+                health -= Mathf.Abs(amount);
+            }
+
+            // Register the last damage type taken & last dealer
+            lastDamageDealer = dealer;
+            lastDamageType = type;
+            UpdateStats();
+
+            // Reset the natural heal time
+            healTimer = timeUntilHealing;
+            OnDamaged(amount, type, dealer);
+        }
+
+
 
         /// <summary>
         /// Heals this character
         /// </summary>
         /// <param name="amount">(Positive) amount of health to heal.</param>
-        public void Heal(float amount)
+        public void Heal(float amount) => Heal(amount, this, false);
+        /// <summary>
+        /// Heals this character
+        /// </summary>
+        /// <param name="amount">(Positive) amount of health to heal.</param>
+        /// <param name="passive">Is it passive healing?.</param>
+        public void Heal(float amount, bool passive) => Heal(amount, this, passive);
+
+        /// <summary>
+        /// Heals this character
+        /// </summary>
+        /// <param name="amount">(Positive) amount of health to heal.</param>
+        /// <param name="passive">Is it passive healing or not?.</param>
+        public virtual void Heal(float amount, object healer, bool passive)
         {
+            // Register last healer & last heal
+            lastHeal = amount;
+            lastHealer = healer;
+            // Add health
             health += Mathf.Abs(amount);
+            // Update stats
             UpdateStats();
+            // Call onHeal method
+            OnHeal(healAmount * Time.deltaTime, healer, passive);
+        }
+
+        public virtual void AddVelocity(Vector3 velocity)
+        {
+            lastVelocity = this.velocity;
+            this.velocity += velocity;
+            OnVelocityChange(lastVelocity, velocity);
+        }
+
+        public virtual void SetVelocity(Vector3 velocity)
+        {
+            lastVelocity = this.velocity;
+            this.velocity = velocity;
+            OnVelocityChange(lastVelocity, velocity);
         }
 
 
@@ -242,13 +323,29 @@ namespace GroundZero.Entities
                 if (health > 0f)
                 {
                     SetFlag(Flags.DEAD, false);
+                    OnRevive(health, lastHealer);
                 }
             }
             else
             {
+                if (HasFlag(Flags.PASSIVEHEAL))
+                {
+                    if (healTimer <= 0f)
+                    {
+                        if (health < maxHealth)
+                        {
+                            Heal(healAmount * Time.deltaTime, true);
+                        }
+                    }
+                    else
+                    {
+                        healTimer -= Time.deltaTime;
+                    }
+                }
                 if (health <= 0f)
                 {
                     SetFlag(Flags.DEAD, true);
+                    OnDeath(lastDamage, lastDamageType, lastDamageDealer);
                 }
             }
         }
@@ -260,7 +357,7 @@ namespace GroundZero.Entities
         {
             // This assumes gravity is in the Y axis.
             // If not, you'll have to set the new axis in the below code where it updates velocity
-            velocity += (Physics.gravity * Time.deltaTime);
+            AddVelocity(Physics.gravity * Time.deltaTime);
 
             // If character was grounded last frame...
             if (wasGrounded)
@@ -268,12 +365,13 @@ namespace GroundZero.Entities
                 // And it remains grounded...
                 if (controller.isGrounded)
                 {
-                    velocity.y = 0f;
+                    SetVelocity(new Vector3(velocity.x, 0f, velocity.z));
                     wasGrounded = true;
                 }
                 else // And is no longer grounded (Jumping or falling of ledge)
                 {
                     fallStart = transform.position;
+                    OnLeaveGround(velocity, fallStart);
                     wasGrounded = false;
                 }
             }
@@ -287,13 +385,21 @@ namespace GroundZero.Entities
                     {
                         HandleFallDamage();
                     }
-
+                    OnLand(velocity, fallStop);
                     wasGrounded = true;
                 }
                 else // And he keeps falling...
                 {
                     wasGrounded = false;
                 }
+            }
+        }
+
+        void HandleFriction()
+        {
+            if (!isMoving)
+            {
+                velocity *= friction * Time.deltaTime;
             }
         }
 
@@ -314,22 +420,15 @@ namespace GroundZero.Entities
         {
             controller.Move(velocity * Time.deltaTime);
         }
-
-        void HandleHealing()
-        {
-            if (healTimer <= 0)
-            {
-                Heal(healAmount * Time.deltaTime);
-            } else
-            {
-                healTimer -= Time.deltaTime;
-            }
-        }
         
         #endregion
 
-
-
-
+        public virtual void OnDamaged(float damage, DamageType type, object dealer) { }
+        public virtual void OnLeaveGround(Vector3 velocity, Vector3 position) { }
+        public virtual void OnLand(Vector3 velocity, Vector3 position) { }
+        public virtual void OnHeal(float amount, object healer, bool passive) { }
+        public virtual void OnDeath(float finalBlow, DamageType dmgType, object killer) { }
+        public virtual void OnRevive(float heal, object healer) { }
+        public virtual void OnVelocityChange(Vector3 lastVelocity, Vector3 newVelocity) { }
     }
 }
