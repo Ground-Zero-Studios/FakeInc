@@ -55,8 +55,8 @@ public class Country : MonoBehaviour
             countrySize = Random.Range(1,101);
         }
 
-        Effect.scopes.Add(name);
-        Condition.scopes.Add(name);
+        //Effect.scopes.Add(name);
+        //Condition.scopes.Add(name);
 
     }
 
